@@ -65,19 +65,6 @@ stages:
               downloadPath: '$(build.artifactstagingdirectory)'
           
 
-          # ARM template deployment task
-          - task: AzureResourceGroupDeployment@2
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise'
-              action: 'Create Or Update Resource Group'
-              resourceGroupName: '$(ResourceGroupName)'
-              location: 'Central India'
-              templateLocation: 'Linked artifact'
-              csmFile: '$(build.artifactstagingdirectory)/**/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.json'
-              csmParametersFile: '$(build.artifactstagingdirectory)/**/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetupMerged.param.json'
-              overrideParameters: '-WebsiteName $(WebsiteName) -PUL_ServerName $(ServerName)  -PUL_HostingPlanName $(HostingPlan)'
-              deploymentMode: 'Incremental'
-
           # Azure App Service Deploy task - deploy to slot 'Dev'
           - task: AzureRmWebAppDeployment@3
             displayName: 'Azure App Service Deploy'
@@ -145,7 +132,7 @@ stages:
           - task: AzureRmWebAppDeployment@3
             displayName: 'Azure App Service Deploy'
             inputs:
-              azureSubscription: 'Visual Studio Enterprise'
+              azureSubscription: 'AzureRMsubscription'
               WebAppName: '$(WebsiteName)'
               Package: '$(build.artifactstagingdirectory)/**/PartsUnlimitedWebsite.zip'
           
